@@ -1,0 +1,25 @@
+﻿@page "/dynamic"
+
+<input @bind="childCount" />
+<button @onclick="GenerateFields">Указать количество детей</button>
+
+@if (childNames != null) {
+    @for (int i = 0; i < childNames.Count; i++) {
+        int index = i;
+        <input @bind="childNames[index]" placeholder="Имя ребенка" />
+    }
+    <button @onclick="ShowNames">Показать имена</button>
+}
+
+@code {
+    private int childCount;
+    private List<string> childNames = new();
+
+    private void GenerateFields() {
+        childNames = Enumerable.Repeat("", childCount).ToList();
+    }
+
+    private void ShowNames() {
+        // Логика вывода имен
+    }
+}

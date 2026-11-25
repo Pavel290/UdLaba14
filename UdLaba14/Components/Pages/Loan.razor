@@ -1,0 +1,78 @@
+﻿@page "/loan"
+
+<h3>Заявка на получение кредита Alphabank</h3>
+
+@if (!string.IsNullOrEmpty(resultMessage)) {
+    <p>@resultMessage</p>
+    <hr />
+}
+
+<div>
+    <p>Выберите сумму необходимого кредита:</p>
+
+    <label>
+        <input type="radio" name="loan" value="1000" @onchange="@(() => selectedLoan = "1000")" />
+        $1000 под 8,0% годовых
+    </label><br />
+
+    <label>
+        <input type="radio" name="loan" value="5000" @onchange="@(() => selectedLoan = "5000")" />
+        $5000 под 11,5% годовых
+    </label><br />
+
+    <label>
+        <input type="radio" name="loan" value="10000" @onchange="@(() => selectedLoan = "10000")" />
+        $10000 под 15,0% годовых
+    </label><br /><br />
+
+    <p>
+        Введите сумму ежемесячного платежа в долларах:
+        <input type="number" @bind="monthlyPayment" />
+    </p>
+
+    <button @onclick="CalculateLoan">Подать заявку</button>
+</div>
+
+@code {
+    private string selectedLoan = "";
+    private double monthlyPayment;
+    private string resultMessage = "";
+
+    private void CalculateLoan() {
+        int duration = 0;
+        double interest = 0;
+        double loanAmount = 0;
+
+        switch (selectedLoan) {
+            case "1000":
+                loanAmount = 1000;
+                interest = 8.0;
+                break;
+            case "5000":
+                loanAmount = 5000;
+                interest = 11.5;
+                break;
+            case "10000":
+                loanAmount = 10000;
+                interest = 15.0;
+                break;
+            default:
+                resultMessage = "Вы не выбрали сумму кредита";
+                return;
+        }
+
+        while (loanAmount > 0) {
+            duration = duration + 1;
+            double monthly = monthlyPayment - (loanAmount * interest / 100);
+
+            if (monthly <= 0) {
+                resultMessage = "Чтобы погасить кредит, требуются более крупные ежемесячные платежи";
+                return;
+            }
+
+            loanAmount = loanAmount - monthly;
+        }
+
+        resultMessage = $"Для погашения кредита при процентной ставке {interest}% понадобится {duration} месяцев.";
+    }
+}

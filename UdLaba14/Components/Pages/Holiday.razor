@@ -1,0 +1,46 @@
+﻿@page "/holiday"
+
+<h3>Заказ путевок в отели Турции</h3>
+
+<select @bind="destination">
+    <option value="Alania">Алания</option>
+    <option value="Kimer">Кемер</option>
+    <option value="Antalia">Анталия</option>
+</select>
+
+<select @bind="grade">
+    <option value="three">Три звездочки</option>
+    <option value="four">Четыре звездочки</option>
+    <option value="five">Пять звездочек</option>
+</select>
+
+<button @onclick="CalculatePrice">Отправить заявку</button>
+
+@if (resultMessage != null) {
+    <p>@resultMessage</p>
+}
+
+@code {
+    private string destination = "Alania";
+    private string grade = "three";
+    private string? resultMessage;
+
+    private void CalculatePrice() {
+        double price = 500;
+        string destGrade = destination + grade;
+
+        switch (destGrade) {
+            case "Kimerthree":
+                price *= 2;
+                resultMessage = $"Стоимость в 3-звёздочном отеле города Кемер: {price}";
+                break;
+            case "Kimerfour":
+                price *= 2 * 4;
+                resultMessage = $"Стоимость в 4-звёздочном отеле города Кемер: {price}";
+                break;
+            default:
+                resultMessage = "Выберите снова";
+                break;
+        }
+    }
+}

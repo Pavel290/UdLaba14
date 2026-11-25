@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="UdLaba14.Client/UdLaba14.Client.csproj" />
+  <Project Path="UdLaba14/UdLaba14.csproj" />
+</Solution>
